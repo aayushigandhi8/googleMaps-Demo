@@ -1,0 +1,17 @@
+<div style="margin: 20px;">
+    <input type="text" (keydown.enter)="$event.preventDefault()" placeholder="Search Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search class="searchBox">
+</div>
+<div *ngFor="let p of allPlaces" class="m-b-10">
+    <div class="chip">
+        <div>
+            {{p.formatted_address}}<span class="closebtn" (click)="removeAdd(p.formatted_address)">x</span>
+        </div>
+    </div>
+</div>
+<div style="margin: 0 30px;">
+    <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
+        <agm-marker *ngFor="let m of markers" [latitude]="m.latitude" [longitude]="m.longitude" [markerDraggable]="true">
+        </agm-marker>
+        <!-- <agm-polygon [paths]="paths"> </agm-polygon> -->
+    </agm-map>
+</div>

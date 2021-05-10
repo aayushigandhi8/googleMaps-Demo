@@ -1,0 +1,39 @@
+agm-map {
+    height: 500px;
+}
+
+.chip {
+    display: inline-block;
+    padding: 0 25px;
+    height: 50px;
+    font-size: 18px;
+    line-height: 50px;
+    border-radius: 25px;
+    background-color: #f1f1f1;
+}
+
+.closebtn {
+    padding-left: 10px;
+    color: #888;
+    font-weight: bold;
+    float: right;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.closebtn:hover {
+    color: #000;
+}
+
+.m-b-10 {
+    margin-bottom: 10px;
+}
+
+.searchBox {
+    font-size: 16px;
+    padding: 10px;
+    margin: 0 0 0 10px;
+    border: 1px solid lightgrey;
+    border-radius: 7px;
+    color: grey;
+}
