@@ -9,9 +9,14 @@
     </div>
 </div>
 <div style="margin: 0 30px;">
-    <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
-        <agm-marker *ngFor="let m of markers" [latitude]="m.latitude" [longitude]="m.longitude" [markerDraggable]="true">
+    <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" [fitBounds]="bounds">
+        <agm-marker *ngFor="let m of markers" [latitude]="m.latitude" [longitude]="m.longitude" [markerDraggable]="false" [agmFitBounds]="true">
         </agm-marker>
+        <!-- Adds single marker -->
+        <!-- <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="false">
+        </agm-marker> -->
+
+        <!-- Creates polygon -->
         <!-- <agm-polygon [paths]="paths"> </agm-polygon> -->
     </agm-map>
 </div>
