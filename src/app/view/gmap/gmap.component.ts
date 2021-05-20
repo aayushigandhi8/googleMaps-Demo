@@ -6,6 +6,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { AgmGeocoder, MapsAPILoader } from '@agm/core';
+import { listenerCount } from 'events';
 
 @Component({
   selector: 'app-gmap',
@@ -72,7 +73,7 @@ export class GmapComponent implements OnInit {
   // ];
 
   @ViewChild('search')
-  public searchElementRef!: ElementRef;
+  public searchElementRef!: ElementRef<HTMLInputElement>;
 
   constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone) {}
 
@@ -88,6 +89,7 @@ export class GmapComponent implements OnInit {
         this.ngZone.run(() => {
           let place: google.maps.places.PlaceResult = autocomplete.getPlace();
           this.allPlaces.push(place);
+          this.searchElementRef.nativeElement.value = '';
           this.addMarkers(); //comment this to use single marker
 
           //Use this for single marker
