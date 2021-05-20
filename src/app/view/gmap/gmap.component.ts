@@ -106,6 +106,8 @@ export class GmapComponent implements OnInit {
   }
 
   addMarkers() {
+    this.markers = [];
+
     for (let i = 0; i < this.allPlaces.length; i++) {
       if (
         this.allPlaces[i].geometry === undefined ||
@@ -119,7 +121,9 @@ export class GmapComponent implements OnInit {
         latitude: this.allPlaces[i].geometry.location.lat(),
         longitude: this.allPlaces[i].geometry.location.lng(),
       };
-      // console.log(this.markers);
+    }
+    if (this.markers.length == 0) {
+      this.setCurrentLocation();
     }
   }
 
@@ -128,7 +132,6 @@ export class GmapComponent implements OnInit {
       navigator.geolocation.getCurrentPosition((position) => {
         this.latitude = position.coords.latitude;
         this.longitude = position.coords.longitude;
-        console.log(this.latitude, this.longitude);
         // For static center focus on initialization
         //  this.latitude = 36.778259;
         // this.longitude = -119.417931;
@@ -150,7 +153,6 @@ export class GmapComponent implements OnInit {
   }
 
   getAddress(latitude: number, longitude: number) {
-    console.log(latitude, longitude);
     this.geoCoder.geocode(
       { location: { lat: latitude, lng: longitude } },
       (results: any, status: string) => {

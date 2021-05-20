@@ -1,5 +1,5 @@
 <div style="margin: 20px;">
-    <input type="text" (keydown.enter)="$event.preventDefault()" placeholder="Search Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search class="searchBox">
+    <input type="text" (keydown.enter)="$event.preventDefault()" placeholder="Search Location" autocorrect="off" autocapitalize="off" spellcheck="off" #search class="searchBox">
 </div>
 <div *ngFor="let p of allPlaces" class="m-b-10">
     <div class="chip">
