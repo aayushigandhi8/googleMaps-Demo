@@ -8,6 +8,8 @@
         </div>
     </div>
 </div>
+<button mat-button (click)="onSave()">Save</button>
+
 <div style="margin: 0 30px;">
     <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" [fitBounds]="bounds">
         <agm-marker *ngFor="let m of markers" [latitude]="m.latitude" [longitude]="m.longitude" [markerDraggable]="false" [agmFitBounds]="true">

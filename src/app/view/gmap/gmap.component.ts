@@ -23,6 +23,9 @@ export class GmapComponent implements OnInit {
   markers: any[] = [];
   bounds: any;
 
+  body: any[] = [];
+  county: any;
+
   @ViewChild('search')
   public searchElementRef!: ElementRef<HTMLInputElement>;
 
@@ -40,7 +43,6 @@ export class GmapComponent implements OnInit {
         this.ngZone.run(() => {
           let place: google.maps.places.PlaceResult = autocomplete.getPlace();
           this.allPlaces.push(place);
-          console.log('place', this.allPlaces);
           this.searchElementRef.nativeElement.value = '';
           this.addMarkers(); //comment this to use single marker
 
@@ -61,7 +63,6 @@ export class GmapComponent implements OnInit {
 
   addMarkers() {
     this.markers = [];
-
     for (let i = 0; i < this.allPlaces.length; i++) {
       if (
         this.allPlaces[i].geometry === undefined ||
@@ -70,13 +71,19 @@ export class GmapComponent implements OnInit {
         return;
       }
       this.zoom = 12;
+      this.county = this.allPlaces[i].formatted_address;
 
       this.markers[i] = {
         latitude: this.allPlaces[i].geometry.location.lat(),
         longitude: this.allPlaces[i].geometry.location.lng(),
       };
-      this.getZipcode(this.markers[i].latitude, this.markers[i].longitude);
+      this.getZipcode(
+        this.markers[i].latitude,
+        this.markers[i].longitude,
+        this.county
+      );
     }
+
     if (this.markers.length == 0) {
       this.setCurrentLocation();
     }
@@ -100,7 +107,6 @@ export class GmapComponent implements OnInit {
             position.coords.longitude
           )
         );
-        // console.log(this.bounds);
         this.zoom = 8;
         this.getAddress(this.latitude, this.longitude);
       });
@@ -125,10 +131,10 @@ export class GmapComponent implements OnInit {
     );
   }
 
-  getZipcode(lat, lng) {
+  getZipcode(lat, lng, county): any {
     const latlng = {
-      lat: lat,
-      lng: lng,
+      lat,
+      lng,
     };
     this.geoCoder.geocode(
       { location: latlng },
@@ -140,7 +146,16 @@ export class GmapComponent implements OnInit {
           if (results[0]) {
             results[0].address_components.forEach((a) => {
               if (a.types.includes('postal_code')) {
-                console.log('zipcode:', a.long_name);
+                const zipcode = a.long_name;
+                const place = {
+                  county: county,
+                  lat: lat,
+                  lng: lng,
+                  zipcode: zipcode,
+                };
+                if (!this.body.some((a) => a.county === county)) {
+                  this.body.push(place);
+                }
               }
             });
           } else {
@@ -157,6 +172,22 @@ export class GmapComponent implements OnInit {
     this.allPlaces = this.allPlaces.filter(
       (place) => place.formatted_address != add
     );
+    this.body = this.body.filter((place) => place.county != add);
     this.addMarkers();
+  }
+
+  onSave(): any {
+    if (this.allPlaces.length === 0) {
+      console.log('Please select at least one county');
+      return;
+    } else {
+      this.markers = [];
+      this.addMarkers();
+      const body = {
+        datetime: [], // time slot selection will be passed here
+        locations: [...this.body],
+      };
+      console.log('body', body); //pass this to api
+    }
   }
 }
